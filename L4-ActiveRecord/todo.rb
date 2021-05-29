@@ -8,6 +8,15 @@ class Todo < ActiveRecord::Base
     "#{id}#{display_status} #{todo_text} #{display_date}"
   end
 
+  def self.overdue
+    where("due_date < ?", Date.today)
+  end
+  def self.duetoday
+    where(due_date: Date.today)
+  end
+  def self.duelater
+    where("due_date > ?", Date.today)
+  end
   #maps through the todos array and converts it into a multiline statement.
   def self.to_displayable_list
     all.map { |todo| todo.to_displayable_string }
@@ -17,15 +26,15 @@ class Todo < ActiveRecord::Base
     puts "My Todo-list\n\n"
     #Checks weather the duedate is overdue filters the statements in that date and displays it.
     puts "Overdue\n"
-    puts Todo.where("due_date < ?", Date.today).to_displayable_list
+    puts overdue.map { |todo| todo.to_displayable_string }
     puts "\n\n"
     #Checks whether the duedate is duetoday filters the statements in that date and displays it.
     puts "Due Today\n"
-    puts Todo.where(due_date: Date.today).to_displayable_list
+    puts duetoday.map { |todo| todo.to_displayable_string }
     puts "\n\n"
     #Checks whether the duedate is duelater filters the statements in that date and displays it.
     puts "Due Later\n"
-    puts Todo.where("due_date > ?", Date.today).to_displayable_list
+    puts duelater.map { |todo| todo.to_displayable_string }
     puts "\n\n"
   end
   #adds a new todo.
@@ -34,7 +43,7 @@ class Todo < ActiveRecord::Base
   end
   #Marks a todo as complete.
   def self.mark_as_complete(todo_id)
-    Todo.find_by(id: todo_id).update(completed: true)
+    Todo.find(todo_id).update(completed: true)
     exit
   end
 end
