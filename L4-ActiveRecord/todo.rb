@@ -26,15 +26,15 @@ class Todo < ActiveRecord::Base
     puts "My Todo-list\n\n"
     #Checks weather the duedate is overdue filters the statements in that date and displays it.
     puts "Overdue\n"
-    puts overdue.map { |todo| todo.to_displayable_string }
+    puts overdue.to_displayable_list
     puts "\n\n"
     #Checks whether the duedate is duetoday filters the statements in that date and displays it.
     puts "Due Today\n"
-    puts duetoday.map { |todo| todo.to_displayable_string }
+    puts duetoday.to_displayable_list
     puts "\n\n"
     #Checks whether the duedate is duelater filters the statements in that date and displays it.
     puts "Due Later\n"
-    puts duelater.map { |todo| todo.to_displayable_string }
+    puts duelater.to_displayable_list
     puts "\n\n"
   end
   #adds a new todo.
